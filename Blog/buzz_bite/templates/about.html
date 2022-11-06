@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+    <h4 role="heading" aria-level="4" data-typography="HeadingBeta" class="x-el x-2">
+        <span data-ux="Element" class="x-el x-1">About Us</span>
+        <hr aria-hidden="true" role="separator" data-ux="SectionHeadingHR" class="x-el x-3">
+    </h4>
+    <div data-ux="Grid" class="c-aa">
+        <div data-ux="GridCell" class="c-a1">
+            <div data-ux="ContentBasic" class="c-a2">
+                <h4 role="heading" aria-level="4" data-ux="ContentHeading" data-typography="HeadingDelta" class="c-a3">
+                    Let's Get Acquainted
+                </h4>
+                <div data-ux="ContenText" alignment="left" data-typography="BodyAlpha" class="c-a4">
+                    <p style="margin: 0;">
+                        <span>&nbsp;</span>
+                    </p>
+                    <p style="margin: 0;">
+                            <span>
+                                <b><a href="{{ url_for('main.home') }}" class="bb"> BUZZ BITE </a></b>is an online brand that produces high-quality entertainment and technology content locally and globally for our potential audience.
+                            </span>
+                    </p>
+                    <p style="margin: 0;">
+                            <span>
+                                <br>
+                            </span>
+                    </p>
+                    <p style="margin: 0;">
+                            <span>
+                                We offer our subscribers undiluted information on entertainment news, technology, programming, and many worthy contents with occasional humor — and always with blunt honesty.
+                            </span>
+                    </p>
+                    <p style="margin: 0;">
+                            <span>
+                                <br>
+                                As a visitor here, you are part of a fantastic community.
+                            </span>
+                    </p>
+                    <p style="margin: 0;">
+                            <span>
+                                <br>
+                                Thank you so much for being part of this community. There are plenty of ways that you can become more involved. You can Register and become part of it.
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                            </span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        {% if current_user.is_authenticated %}
+        {% else %}
+            <div data-ux="GridCell" class="c2-aa c2-ab">
+                <div data-ux="ContentCard" class="c2-a1 c2-b1">
+                    <h4 role="heading" aria-level="4" data-ux="ContentCardHeading" data-typography="HeadingDelta"
+                        class="c2-a2 c2-b2">
+                        Stay In Touch
+                    </h4>
+                    <div data-ux="ContentCardText" data-typography="BodyAlpha" class="c2-a3 c2-b3">
+                        <p style="margin: 0;">
+                                <span>
+                                    You are welcome to keep coming back here to see new content.
+                                </span>
+                        </p>
+                    </div>
+                    <div data-ux="Block" class="c2-a4 c2-b4">
+                        <a href="{{ url_for('users.register') }}" data-ux-btn="secondary" data-ux="ContentCardButton"
+                           data-typography="ButtonAlpha" class="c2-a5 c2-b5">REGISTER</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

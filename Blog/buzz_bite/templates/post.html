@@ -20,7 +20,106 @@
             <p class="article-content" style="color: #fff;">{{ post.content }}</p>
         </div>
     </article>
-     <!-- Modal -->
+    <br>
+    <!-- <button type="submit" name="like-post" style="display: flex; font-size: 19px; font-weight: 600; margin: 10px auto 0px auto; width: 120px; justify-content: center; align-items: center; background: #552708 !important; color: #fff; padding: 10px; border-radius: 5px;" href="whatsapp://send?text=End+of+contets+draws+nearer+%0A https://purenetwork.tech/post/end-of-contets-draws-nearer">
+        <span style="font-size: 16px;" class="material-icons-outlined">thumb_up</span>
+        <span style="margin-left: 4px; font-size: 13px;">Like post</span>
+    </button> -->
+    <br>
+
+    <!-- <div class="collapse" id="comments-{{ post.id }}">
+        <div class="card">
+            <div class="card-body" id="comments-expanded-{{ post.id }}">
+                <h5>{{post.comments|length}} Comments</h5>
+                <div class="card-text">{{post.text}}</div>
+                {% for comment in post.comments %}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="/posts/{{ comment.user.username }}">{{ comment.name}}</a> : {{ comment.text }}
+                        </div>
+                        <div>
+                            <small class="text-muted">
+                                {{ comment.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}
+                            </small>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <p class="card-text">
+        {% if post.comments|length > 0 %}
+            <a data-toggle="collapse" href="#comments-{{ post.id }}" role="button">
+                <button>View {{ post.comments|length }} Comments</button>
+            </a>
+        {% else %}
+            <small class="text-muted">No Comments</small>
+        {% endif %}
+    </p> -->
+
+    <div class="comments-area collapse" id="comments-{{ post.id }}">
+        <h4>{{post.comments|length}} Comments</h4>
+        <div class="card-text">{{post.text}}</div>
+        {% for comment in post.comments %}
+            <div class="comment-list">
+                <div class="single-comment justify-content-between d-flex">
+                    <div class="user justify-content-between d-flex">
+                        <div class="thumb">
+                            <img class="rounded-circle article-img" src="{{ image_file }}">
+                            <!-- <img class="rounded-circle article-img"
+                                src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"> -->
+                        </div>
+            
+                        <div class="desc">
+                            <h5><a href="/posts/{{ comment.user.username }}">{{comment.name}}</a></h5>
+                            <p class="date">{{comment.date_posted.strftime('%Y-%m-%d %H:%M:%S')}}</p>
+                            <p class="comment">
+                                {{comment.text}}
+                            </p>
+                        </div>
+            
+                    </div>
+                    <!-- <div class="reply-btn">
+                        <a href="" class="btn-reply text-uppercase">reply</a>
+                    </div> -->
+                </div>
+            </div>
+        {% endfor %}
+    
+    </div>
+    <p class="card-text">
+        {% if post.comments|length > 0 %}
+            <a data-toggle="collapse" href="#comments-{{ post.id }}" role="button">
+                <!-- <button>View {{ post.comments|length }} Comments</button> -->
+                <h4>{{post.comments|length}} Comments</h4>
+            </a>
+        {% else %}
+            <small class="text-muted"><h5>No Comment</h5></small>
+        {% endif %}
+    </p>
+
+    <div class="comment-form">
+        <h4>Leave a Comment</h4>
+        <form method="POST" action="/create-comment/{{post.id}}">
+            <div class="form-group form-inline">
+              <div class="form-group col-lg-6 col-md-6 name">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
+              </div>
+              <div class="form-group col-lg-6 col-md-6 email">
+                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
+              </div>	
+            </div>
+            <!-- <div class="form-group">
+                <input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
+            </div> -->
+            <div class="form-group">
+                <textarea name="text" class="form-control mb-10" rows="5" name="text" placeholder="Message" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'"></textarea>
+            </div>
+            <button type="submit" class="btn btn-outline-info ">Post Comment</button>	
+        </form>
+    </div>
+
+    <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

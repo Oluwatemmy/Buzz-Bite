@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpeg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
+    comments = db.relationship('Comments', backref='user', lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -43,6 +44,7 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship('Comments', backref='post', lazy=True)
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
@@ -56,3 +58,18 @@ class Contact(db.Model):
 
     def __repr__(self):
         return f"Contact('{self.email}', '{self.message}')"
+
+
+class Comments(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(200), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    author = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    name = db.Column(db.String(200), unique=False, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete='CASCADE'), nullable=False)
+    email = db.Column(db.String(200), unique=False, nullable=False)
+    feature = db.Column(db.Boolean, default=False, nullable=False)
+
+    def __repr__(self):
+        return f"Comment('{self.author}', '{self.text}')"

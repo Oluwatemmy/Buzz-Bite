@@ -491,3 +491,39 @@ a.article-title:hover {
 .comment-form .submit_btn {
   float: right;
 }
+
+.date {
+  margin-bottom: 15px;
+}
+
+.date .gad_btn {
+  color: #fff;
+}
+
+.date a {
+  color: #777777;
+  font-size: 12px;
+  font-family: "Open Sans", sans-serif;
+  margin-right: 15px;
+}
+
+.date a i {
+  padding-right: 8px;
+}
+
+.date a:last-child {
+  margin-right: 0px;
+}
+
+.bttn {
+  display: flex;
+  font-size: 19px;
+  font-weight: 600;
+  margin: 10px auto 0px auto;
+  width: 120px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 20px rgb(197, 195, 195);
+}

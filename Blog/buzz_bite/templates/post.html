@@ -5,27 +5,72 @@
              src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
         <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}" style="color: #fff;">{{ post.author.username }}</a>
-                <small class="" style="color: #e7ebef;">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-                {% if post.author == current_user %}
-                    <div>
-                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
-                        <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">
-                            Delete
-                        </button>
-                    </div>
-                {% endif %}
+                <div class="date">
+                    <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}" style="color: #fff;">{{ post.author.username }}</a>
+                    <small class="" style="color: #e7ebef;">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                    <small>
+                        <a style="color: #fff;" style="pointer-events: none;"><i class="far fa-eye" aria-hidden="true"></i>Views</a>
+                        <a style="color: #fff;" style="pointer-events: none;"><i class="fas fa-thumbs-up" aria-hidden="true"></i>{{ post.likes|length }} Likes</a>
+                    </small>
+                </div>
+                <div>
+                    <!-- {{ post.likes|length }}
+                    {% if current_user in post.likes|map(attribute='author')|list %}
+                        <a href="/like-post/{{ post.id }}" ><i class="fas fa-thumbs-up"></i></a>
+                    {% else %}
+                        <a href="/like-post/{{ post.id }}" ><i class="far fa-thumbs-up"></i></a>
+                    {% endif %} -->
+                    <!-- {% set liked = false %}
+                        style="font-size: 100px;"
+                    {% for like in post.likes %}
+                        {% if like.author == current_user %}
+                            {% set liked = true %}
+                        {% endif %}
+                    {% endfor %}
+
+
+                    {% if liked %}
+                        {% set icon_class = "fas fa-thumbs-up" %}
+                    {% else %}
+                        {% set icon_class = "far fa-thumbs-up" %}
+                    {% endif %}
+
+                    <a href="/like-post/{{ post.id }}"><i class="{{ icon_class }}"></i></a> -->
+                    {% if post.author == current_user %}
+                        <div>
+                            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
+                            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">
+                                Delete
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
             <h2 class="article-title" style="color: #fff;">{{ post.title }}</h2>
             <p class="article-content" style="color: #fff;">{{ post.content }}</p>
         </div>
     </article>
     <br>
-    <!-- <button type="submit" name="like-post" style="display: flex; font-size: 19px; font-weight: 600; margin: 10px auto 0px auto; width: 120px; justify-content: center; align-items: center; background: #552708 !important; color: #fff; padding: 10px; border-radius: 5px;" href="whatsapp://send?text=End+of+contets+draws+nearer+%0A https://purenetwork.tech/post/end-of-contets-draws-nearer">
-        <span style="font-size: 16px;" class="material-icons-outlined">thumb_up</span>
+    <!-- {{ post.likes|length }}
+                    {% if current_user in post.likes|map(attribute='author')|list %}
+                        <a href="/like-post/{{ post.id }}" ><i class="fas fa-thumbs-up"></i></a>
+                    {% else %}
+                        <a href="/like-post/{{ post.id }}" ><i class="far fa-thumbs-up"></i></a>
+                    {% endif %} -->
+    <!-- <button type="submit" name="like-post" style="display: flex; font-size: 19px; font-weight: 600; margin: 10px auto 0px auto; width: 120px; justify-content: center; align-items: center; background: #552708 !important; color: #fff; padding: 10px; border-radius: 5px;" action="/like-post/{{ post.id }}" class="btn btn-sm btn-info">
+        <i class="fas fa-thumbs-up"></i>
         <span style="margin-left: 4px; font-size: 13px;">Like post</span>
     </button> -->
+    {% if current_user.is_authenticated %}
+        <form method="get" action="/like-post/{{ post.id }}">
+            <button type="submit" name="like-post" class="btn bttn">
+                <i class="fas fa-thumbs-up" style="font-size: 26px;"></i>
+                <span style="margin-left: 4px; font-size: 13px;">Like post</span>
+            </button>
+        </form>
+    {% endif %}
     <br>
+    <!-- <input type="submit" name="like-post"> -->
 
     <!-- <div class="collapse" id="comments-{{ post.id }}">
         <div class="card">
@@ -66,12 +111,11 @@
                     <div class="user justify-content-between d-flex">
                         <div class="thumb">
                             <img class="rounded-circle article-img" src="{{ image_file }}">
-                            <!-- <img class="rounded-circle article-img"
-                                src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"> -->
+                            
                         </div>
             
                         <div class="desc">
-                            <h5><a href="/posts/{{ comment.user.username }}">{{comment.name}}</a></h5>
+                            <h5><a href="#">{{comment.name}}</a></h5>
                             <p class="date">{{comment.date_posted.strftime('%Y-%m-%d %H:%M:%S')}}</p>
                             <p class="comment">
                                 {{comment.text}}
@@ -98,26 +142,28 @@
         {% endif %}
     </p>
 
-    <div class="comment-form">
-        <h4>Leave a Comment</h4>
-        <form method="POST" action="/create-comment/{{post.id}}">
-            <div class="form-group form-inline">
-              <div class="form-group col-lg-6 col-md-6 name">
-                <input type="text" name="name" class="form-control" id="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
-              </div>
-              <div class="form-group col-lg-6 col-md-6 email">
-                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
-              </div>	
-            </div>
-            <!-- <div class="form-group">
-                <input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
-            </div> -->
-            <div class="form-group">
-                <textarea name="text" class="form-control mb-10" rows="5" name="text" placeholder="Message" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'"></textarea>
-            </div>
-            <button type="submit" class="btn btn-outline-info ">Post Comment</button>	
-        </form>
-    </div>
+    {% if current_user.is_authenticated %}
+        <div class="comment-form">
+            <h4>Leave a Comment</h4>
+            <form method="POST" action="/create-comment/{{post.id}}">
+                <div class="form-group form-inline">
+                <div class="form-group col-lg-6 col-md-6 name">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'" required>
+                </div>
+                <div class="form-group col-lg-6 col-md-6 email">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
+                </div>	
+                </div>
+                <!-- <div class="form-group">
+                    <input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
+                </div> -->
+                <div class="form-group">
+                    <textarea name="text" class="form-control mb-10" rows="5" name="text" placeholder="Message" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Message'" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-outline-info">Post Comment</button>	
+            </form>
+        </div>
+    {% endif %}
 
     <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">

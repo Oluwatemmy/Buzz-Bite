@@ -21,6 +21,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
     comments = db.relationship('Comments', backref='user', lazy=True)
     likes = db.relationship('Likes', backref='user', lazy=True)
+    # views = db.relationship('Views', backref='user', lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -47,6 +48,8 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comments = db.relationship('Comments', backref='post', lazy=True)
     likes = db.relationship('Likes', backref='post', lazy=True)
+    # view = db.relationship('Views', backref='post', lazy=True)
+    views = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
@@ -83,3 +86,11 @@ class Likes(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     author = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete='CASCADE'), nullable=False)
+
+
+# class Views(db.Model):
+#     __tablename__='views'
+#     id = db.Column(db.Integer, primary_key=True)
+#     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+#     author = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+#     post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete='CASCADE'), nullable=False)

@@ -26,6 +26,8 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     comments =Comments.query.order_by(Comments.id.desc()).all()
     image_file = url_for('static', filename='profile_pics/' + post.author.image_file)
+    post.views += 1
+    db.session.commit()
     # image = current_user.image_file
     return render_template('post.html', title=post.title, comments=comments, post=post, image_file=image_file)
 
@@ -101,3 +103,16 @@ def like(post_id):
         db.session.commit()
 
     return redirect(url_for('posts.post', post_id=post_id))
+
+
+# @posts.route("/view-post/<post_id>", methods=['GET'])
+# @login_required
+# def view(post_id):
+#     post = Post.query.filter_by(id=post_id)
+#     views = Views.query.filter_by(author=current_user.id, post_id=post_id).first()
+
+#     if not post:
+#         flash("Post does not exists.", category='error')
+
+#     for view in views:
+#         post

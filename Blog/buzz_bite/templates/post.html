@@ -9,7 +9,7 @@
                     <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}" style="color: #fff;">{{ post.author.username }}</a>
                     <small class="" style="color: #e7ebef;">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
                     <small>
-                        <a style="color: #fff;" style="pointer-events: none;"><i class="far fa-eye" aria-hidden="true"></i>Views</a>
+                        <a style="color: #fff;" style="pointer-events: none;"><i class="far fa-eye" aria-hidden="true"></i>{{ post.views }} Views</a>
                         <a style="color: #fff;" style="pointer-events: none;"><i class="fas fa-thumbs-up" aria-hidden="true"></i>{{ post.likes|length }} Likes</a>
                     </small>
                 </div>
@@ -115,7 +115,7 @@
                         </div>
             
                         <div class="desc">
-                            <h5><a href="#">{{comment.name}}</a></h5>
+                            <h5><a>{{comment.name}}</a></h5>
                             <p class="date">{{comment.date_posted.strftime('%Y-%m-%d %H:%M:%S')}}</p>
                             <p class="comment">
                                 {{comment.text}}

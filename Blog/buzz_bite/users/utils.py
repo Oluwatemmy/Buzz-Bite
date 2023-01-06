@@ -26,4 +26,4 @@ def send_email(user):
 
     If you did not make this request then simply ignore this email and no changes will be made.
     '''
-    yagmail.SMTP('temmyghold00@gmail.com', 'fqzeyfeoypjmiyzx').send(user.email, 'Password Reset Request', content)
+    yagmail.SMTP('temmyghold00@gmail.com', os.environ.get('EMAIL_PASS')).send(user.email, 'Password Reset Request', content)
